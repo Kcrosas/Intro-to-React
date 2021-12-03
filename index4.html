@@ -1,0 +1,93 @@
+<!-- Exercise 4 - Paragraph Stats -->
+<html>
+  <head>
+    <style>
+      body {
+        font-family: verdana;
+      }
+      .stats {
+        display: flex;
+        list-style-type: none;
+        padding: 0;
+      }
+      .stats li {
+        border: solid 1px dodgerBlue;
+        flex: 1;
+        margin: 0.5rem;
+        padding: 0.5rem;
+      }
+    </style>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+  </head>
+  <body>
+    <div id='root'>
+    </div>
+  <script type='text/babel'>
+
+
+const Stats = (words) => {
+   //make note of how things are passed into the function. When stat is called, we passed in inside={} which becomes a key/value 
+   const array = words.inside.split(' ') 
+   //lets take the passed in value and turn it into an array 
+   const lengths = array.map(e => e.length)
+   //Get length of each word 
+   const lengthsCount = {} 
+   //Get the number of times a certain length of word occurs 
+   for( let i = 0; i <lengths.length; i++){
+       //if a certain number of letters doesn't exist as a key, set it to zero 
+       if (!lengthsCount[lengths[i]])
+        lengthsCount[lengths[i]] = 0; 
+       //if a certain number of letters does exist and it matches a word, up the count by 1 
+       ++lengthsCount[lengths[i]]; 
+   }
+   const keys = Object.keys(lengthsCount)
+   //Use this to loop through the keys of lengthsCount
+   console.log(lengthsCount[keys[1]])
+   return (
+     <ul>
+        <li>Number of words: {array.length}</li>
+        {
+            keys.map( e => 
+                <li>Words with {e} letter(s): {lengthsCount[e]}</li> 
+            )
+        }
+        
+     </ul> 
+   )
+}
+    class App extends React.Component{
+      constructor(){
+        super();
+        this.state = {
+          paragraph: faker.lorem.paragraph() 
+        };
+       // this.newParagraph = this.newParagraph.bind(this);
+      }
+      //Below auto binds through use of arrow. With arrow, 'this' is tied to its closest parent element which is the class. So 
+      //methods like this.setState will still work 
+      newParagraph = () => {
+        const newPara = faker.lorem.paragraph() 
+        this.setState({ paragraph: newPara });
+      }
+      render(){
+        //const { paragraph } = this.state;
+        //Line above will let you call paragraph instead of this.state.paragraph 
+        //const { newParagraph } = this;
+        //Line above will let you call newParagraph instead of this.newParagraph 
+        return (
+          <div>
+            <button onClick={ this.newParagraph }>Get a New Entry</button>
+            <Stats inside={this.state.paragraph}/> 
+            {/*Calls the component Stats and passes the value of paragraph as its words parameter*/}
+            <p>{ this.state.paragraph }</p>
+          </div>
+        );
+      }
+    }
+    ReactDOM.render(<App />, document.querySelector('#root'));
+  </script>
+  </body>
+</html>

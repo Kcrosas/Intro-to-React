@@ -1,0 +1,43 @@
+<!-- Hello World with React (using babel and JSX)-->
+<html>
+  <head>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { render } = ReactDOM;
+      const { Component } = React;
+
+      class App extends Component {
+        constructor() {
+          super();
+          this.state = {
+            list: [],
+          };
+          setInterval(() => {
+            const newCompany = faker.company.companyName();
+            if (this.state.list.length === 5) {
+              clearInterval(interval);
+            }
+            this.setState({ list: [...this.state.list, newCompany] });
+          }, 500);
+        }
+        render() {
+          return (
+            <ul>
+              {this.state.list.map((e) => (
+                <li>{e}</li>
+              ))}
+            </ul>
+          );
+        }
+      }
+
+      render(<App />, document.querySelector("#root"));
+    </script>
+  </body>
+</html>

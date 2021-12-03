@@ -1,0 +1,40 @@
+<!-- Hello World with React (no babel)-->
+<html>
+  <head>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      //is the equivalent of saying ReactDOM.render()
+      const { render } = ReactDOM;
+      //is the equivalent of saying class App extends React.Component
+      const { Component } = React;
+
+      class App extends Component {
+        constructor() {
+          super();
+          //sets initial state
+          this.state = {
+            paragraph: "", //faker.lorem.paragraph(),
+          };
+          setInterval(() => {
+            //calls for a paragraph
+            const paragraph = faker.lorem.paragraph();
+            //changes the component's state and causes React to re-render
+            this.setState({ paragraph });
+          }, 500);
+        }
+        //this renders again each time setState activates (which it is, every half 500ms)
+        render() {
+          //const { paragraph } = this.state OR this.state.paragraph
+          return React.createElement("h1", null, this.state.paragraph);
+        }
+      }
+      render(React.createElement(App), document.querySelector("#app"));
+    </script>
+  </body>
+</html>
